@@ -1,67 +1,86 @@
-# Mini Expense Split & Settlement System
+# Expense Split & Settlement System
 
-A full-stack web application that allows users to create groups, add members, record expenses, split expenses among members, calculate balances, and generate settlement suggestions.
+A full-stack MERN-style application that allows users to create groups, manage shared expenses, calculate balances, and generate optimized settlement suggestions.
 
-## Features
+---
 
-### Authentication
+# Project Overview
+
+Managing shared expenses manually becomes difficult when multiple people contribute to a group activity such as trips, parties, hostel expenses, or team events.
+
+This application simplifies expense tracking by allowing users to:
+
+* Create groups
+* Add members
+* Record expenses
+* Split expenses equally
+* View member balances
+* Generate settlement suggestions
+
+---
+
+# Key Features
+
+## Authentication
 
 * User Registration
 * User Login
-* JWT Authentication
-* Protected Routes
+* Password Hashing using bcryptjs
+* JWT-based Authentication
+* Protected API Routes
 
-### Group Management
+## Group Management
 
 * Create Group
 * View Groups
 * View Group Details
-* Add Members to Group
+* Add Members to Existing Groups
 
-### Expense Management
+## Expense Management
 
 * Add Expenses
-* View Expenses
-* Split Expenses Among Members
+* View Expense History
+* Track Expense Descriptions
+* Track Expense Payer
 
-### Summary Calculation
+## Balance Summary
 
-* Calculate each member's net balance in a group
+Automatically calculates each member's net balance.
 
 Example:
 
-Harsh paid ₹300 for 3 members.
+Harsh paid ₹300 for a group of 3 members.
 
 Result:
 
-* Harsh: +₹200
-* Mihir: -₹100
-* Jay: -₹100
+* Harsh → +₹200
+* Mihir → -₹100
+* Jay → -₹100
 
-### Settlement Suggestions
+## Settlement Suggestions
 
-Generate minimal transactions required to settle debts.
+Generate the minimum transactions required to settle all balances.
 
 Example:
 
-* Mihir → Harsh ₹100
-* Jay → Harsh ₹100
+* Mihir pays Harsh ₹100
+* Jay pays Harsh ₹100
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-### Frontend
+## Frontend
 
 * React.js
 * React Router DOM
-* Axios
 * Redux Toolkit
+* Axios
 * Tailwind CSS
 * React Icons
 * Sonner
 
-### Backend
+## Backend
 
 * Node.js
 * Express.js
@@ -72,73 +91,162 @@ Example:
 
 ---
 
-## Project Structure
+# System Architecture
 
-project-root/
+Frontend (React)
 
-├── frontend/
+↓
 
-│ ├── src/
+REST APIs
 
-│ ├── components/
+↓
 
-│ ├── pages/
+Backend (Node + Express)
 
-│ ├── api/
+↓
 
-│ ├── routes/
-
-│ └── app/
-
-│
-
-├── backend/
-
-│ ├── controllers/
-
-│ ├── models/
-
-│ ├── routes/
-
-│ ├── middleware/
-
-│ ├── utils/
-
-│ ├── config/
-
-│ └── index.js
-
-│
-
-└── README.md
+MongoDB Database
 
 ---
 
-## Installation
+# Database Schema
 
-### Clone Repository
+## User
 
-```bash
-git clone <repository-url>
-cd project-root
+```js
+{
+  id,
+  name,
+  email,
+  passwordHash
+}
 ```
 
-### Backend Setup
+## Group
+
+```js
+{
+  id,
+  name,
+  members:[]
+}
+```
+
+## Expense
+
+```js
+{
+  id,
+  groupId,
+  paidBy,
+  amount,
+  splitAmong[],
+  description,
+  createdAt
+}
+```
+
+---
+
+# Project Structure
+
+```text
+expense-split-system/
+
+├── backend/
+│
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   ├── .env
+│   └── index.js
+│
+├── frontend/
+│
+│   ├── src/
+│   │
+│   │   ├── api/
+│   │   ├── app/
+│   │   ├── components/
+│   │   ├── features/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   └── App.jsx
+│
+├── screenshots/
+│
+└── README.md
+```
+
+---
+
+# Screenshots
+
+## Login Page
+
+(Add Screenshot Here)
+
+![Login](./screenshots/login.png)
+
+## Register Page
+
+(Add Screenshot Here)
+
+![Login](./screenshots/register.png)
+
+
+## Dashboard
+
+(Add Screenshot Here)
+
+![Dashboard](./screenshots/dashboard.png)
+
+## Group Details
+
+(Add Screenshot Here)
+
+![Group Details](./screenshots/group-details.png)
+
+## Summary Page
+
+(Add Screenshot Here)
+
+![Summary](./screenshots/summary.png)
+
+## Settlement Page
+
+(Add Screenshot Here)
+
+![Settlement](./screenshots/settlement.png)
+
+
+
+# Installation
+
+## Clone Repository
+
+```bash
+git clone "https://github.com/HaRsHRaDaDiYa97/mini-expense-split-system.git"
+```
+
+---
+
+## Backend Setup
 
 ```bash
 cd backend
 
 npm install
-```
 
-
-Run backend:
-
-```bash
 npm run dev
 ```
 
-### Frontend Setup
+---
+
+## Frontend Setup
 
 ```bash
 cd frontend
@@ -150,9 +258,9 @@ npm run dev
 
 ---
 
-## API Endpoints
+# API Endpoints
 
-### Authentication
+## Authentication
 
 POST /api/auth/register
 
@@ -160,7 +268,9 @@ POST /api/auth/login
 
 GET /api/auth/users
 
-### Groups
+---
+
+## Groups
 
 POST /api/groups
 
@@ -170,23 +280,29 @@ GET /api/groups/:id
 
 PUT /api/groups/:id/add-member
 
-### Expenses
+---
+
+## Expenses
 
 POST /api/groups/:id/expenses
 
 GET /api/groups/:id/expenses
 
-### Summary
+---
+
+## Summary
 
 GET /api/groups/:id/summary
 
-### Settlements
+---
+
+## Settlements
 
 GET /api/groups/:id/settlements
 
 ---
 
-## Test Scenario
+# Sample Test Scenario
 
 Users:
 
@@ -194,19 +310,14 @@ Users:
 * Mihir
 * Jay
 
-Create Group:
+Group:
 
-Rajkot Trip
+* Rajkot Trip
 
-Add Expense:
+Expense:
 
-Lunch ₹300
-
-Paid By:
-
-Harsh
-
-Result:
+* Lunch ₹300
+* Paid By Harsh
 
 Summary:
 
@@ -221,7 +332,20 @@ Settlement:
 
 ---
 
-## Author
+# Future Improvements
+
+* Unequal Expense Split
+* Expense Editing
+* Expense Deletion
+* Email Invitations
+* Real-Time Updates
+* Multi-Currency Support
+* Expense Categories
+* Settlement History
+
+---
+
+# Author
 
 Harsh Radadiya
 
