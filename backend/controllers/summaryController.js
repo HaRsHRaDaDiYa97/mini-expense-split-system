@@ -1,17 +1,30 @@
 import Expense from "../models/Expense.js";
-import { calculateSummary } from "../utils/calculateSummary.js";
 
 export const getSummary = async (req, res) => {
   try {
-    const groupId = req.params.id;
-
     const expenses = await Expense.find({
-      groupId,
+      groupId: req.params.id,
     })
-      .populate("paidBy", "name email")
-      .populate("splitAmong.user", "name email");
+      .populate("paidBy", "name")
+      .populate("splitAmong.user", "name");
 
-    const balances = calculateSummary(expenses);
+    const balances = {};
+
+    expenses.forEach((expense) => {
+      const payer = expense.paidBy.name;
+
+      balances[payer] =
+        (balances[payer] || 0) +
+        expense.amount;
+
+      expense.splitAmong.forEach((split) => {
+        const member = split.user.name;
+
+        balances[member] =
+          (balances[member] || 0) -
+          split.amount;
+      });
+    });
 
     res.status(200).json({
       success: true,

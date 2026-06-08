@@ -97,3 +97,22 @@ export const login = async (req, res) => {
     });
   }
 };
+
+
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.find().select(
+      "_id name email"
+    );
+
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
