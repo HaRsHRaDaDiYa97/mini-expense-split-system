@@ -1,12 +1,13 @@
-import React from "react"
+import AppRoutes from "./routes/AppRoutes";
+import { Toaster } from "sonner";
+
 function App() {
   return (
     <>
-   
-
-<h1 className="bg-red-500">harsh</h1>
+      <Toaster richColors position="top-right" />
+      <AppRoutes />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

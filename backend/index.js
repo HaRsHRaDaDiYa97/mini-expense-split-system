@@ -4,6 +4,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 import groupRoutes from "./routes/groupRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import expenseRoutes from "./routes/expenseRoutes.js";
+import summaryRoutes from "./routes/summaryRoutes.js";
+import settlementRoutes from "./routes/settlementRoutes.js";
 
 dotenv.config();
 
@@ -21,6 +24,9 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/groups", groupRoutes);
+app.use("/api", expenseRoutes);
+app.use("/api", summaryRoutes);
+app.use("/api", settlementRoutes);
 
 app.get("/", (req, res) => {
   res.send("Expense Split API Running");
