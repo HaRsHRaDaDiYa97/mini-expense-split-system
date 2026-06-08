@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
-
+import groupRoutes from "./routes/groupRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
@@ -20,6 +20,7 @@ mongoose
   });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/groups", groupRoutes);
 
 app.get("/", (req, res) => {
   res.send("Expense Split API Running");
