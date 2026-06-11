@@ -4,8 +4,8 @@ export const createGroupApi = (data) => {
   return api.post("/groups", data);
 };
 
-export const getGroupsApi = () => {
-  return api.get("/groups");
+export const getGroupsApi = (params) => {
+  return api.get("/groups", { params });
 };
 
 export const getUsersApi = () => {

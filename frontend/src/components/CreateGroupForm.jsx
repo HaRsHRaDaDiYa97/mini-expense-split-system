@@ -1,58 +1,133 @@
 import { useState } from "react";
 import { createGroupApi } from "../api/groupApi";
 import { toast } from "sonner";
+import { Folder, Compass, Users2, Briefcase, Calendar, Plus, Loader2 } from "lucide-react";
 
 const CreateGroupForm = ({ fetchGroups }) => {
-  const [groupName, setGroupName] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    category: "other",
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prevent submission of empty strings
-    if (!groupName.trim()) return;
+    if (!formData.name.trim()) return;
 
     try {
+      setLoading(true);
       await createGroupApi({
-        name: groupName.trim(),
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        category: formData.category,
         members: [],
       });
 
-      toast.success("Group Created");
-      setGroupName("");
+      toast.success("Group Created successfully!");
+      setFormData({
+        name: "",
+        description: "",
+        category: "other",
+      });
       fetchGroups();
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to create group"
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-      
-      {/* Input Group */}
-      <div className="flex-grow">
-        <label htmlFor="groupName" className="sr-only">
-          Group Name
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        {/* Name Input */}
+        <div>
+          <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-1.5">
+            Group Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="e.g. Goa Trip 2026, Rent Split"
+            value={formData.name}
+            required
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-gray-950 focus:border-transparent outline-none transition-all duration-200"
+          />
+        </div>
+
+        {/* Category Dropdown */}
+        <div>
+          <label htmlFor="category" className="block text-sm font-semibold text-gray-700 mb-1.5">
+            Category
+          </label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm text-gray-900 bg-white focus:ring-2 focus:ring-gray-950 focus:border-transparent outline-none transition-all duration-200"
+          >
+            <option value="other">Other / General</option>
+            <option value="trip">Trip / Travel</option>
+            <option value="friends">Friends / Outing</option>
+            <option value="family">Family / Home</option>
+            <option value="office">Office / Projects</option>
+            <option value="event">Event / Party</option>
+          </select>
+        </div>
+
+      </div>
+
+      {/* Description Input */}
+      <div>
+        <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-1.5">
+          Description (Optional)
         </label>
-        <input
-          id="groupName"
-          type="text"
-          placeholder="Enter new group name..."
-          value={groupName}
-          required
-          onChange={(e) => setGroupName(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all duration-200"
+        <textarea
+          id="description"
+          name="description"
+          placeholder="What is this group tracking?"
+          value={formData.description}
+          onChange={handleChange}
+          rows={2}
+          className="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-gray-950 focus:border-transparent outline-none transition-all duration-200 resize-none"
         />
       </div>
 
       {/* Submit Action */}
-      <button
-        type="submit"
-        className="w-full sm:w-auto bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold px-6 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 flex-shrink-0 whitespace-nowrap"
-      >
-        Create Group
-      </button>
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-6 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-xl transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Creating...
+            </>
+          ) : (
+            <>
+              <Plus className="w-4 h-4" />
+              Create Group
+            </>
+          )}
+        </button>
+      </div>
       
     </form>
   );

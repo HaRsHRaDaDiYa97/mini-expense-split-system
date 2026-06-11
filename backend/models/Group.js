@@ -8,10 +8,34 @@ const groupSchema = new mongoose.Schema(
       trim: true,
     },
 
+    description: {
+      type: String,
+      trim: true,
+    },
+
+    category: {
+      type: String,
+      enum: ["trip", "office", "friends", "family", "event", "other"],
+      default: "other",
+    },
+
+    isArchived: {
+      type: Boolean,
+      default: false,
+    },
+
     members: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        role: {
+          type: String,
+          enum: ["owner", "admin", "member"],
+          default: "member",
+        },
       },
     ],
   },

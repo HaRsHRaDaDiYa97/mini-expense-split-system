@@ -5,8 +5,7 @@ import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import GroupDetails from "../pages/GroupDetails";
 import ProtectedRoute from "../components/ProtectedRoute";
-import Summary from "../pages/Summary";
-import Settlements from "../pages/Settlements";
+import LandingPage from "../pages/LandingPage";
 
 const AppRoutes = () => {
     return (
@@ -25,6 +24,11 @@ const AppRoutes = () => {
 
                 <Route
                     path="/"
+                    element={<LandingPage />}
+                />
+
+                <Route
+                    path="/dashboard"
                     element={
                         <ProtectedRoute>
                             <Dashboard />
@@ -37,22 +41,6 @@ const AppRoutes = () => {
                     element={
                         <ProtectedRoute>
                             <GroupDetails />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/group/:id/summary"
-                    element={
-                        <ProtectedRoute>
-                            <Summary />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/group/:id/settlements"
-                    element={
-                        <ProtectedRoute>
-                            <Settlements />
                         </ProtectedRoute>
                     }
                 />

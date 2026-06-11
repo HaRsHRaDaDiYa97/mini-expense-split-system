@@ -4,8 +4,8 @@ export const getGroupDetailsApi = (groupId) => {
   return api.get(`/groups/${groupId}`);
 };
 
-export const getExpensesApi = (groupId) => {
-  return api.get(`/groups/${groupId}/expenses`);
+export const getExpensesApi = (groupId, params) => {
+  return api.get(`/groups/${groupId}/expenses`, { params });
 };
 
 export const addExpenseApi = (groupId, data) => {

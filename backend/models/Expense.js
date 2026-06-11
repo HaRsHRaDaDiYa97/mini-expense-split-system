@@ -27,8 +27,18 @@ const expenseSchema = new mongoose.Schema(
 
     splitType: {
       type: String,
-      enum: ["equal", "unequal"],
+      enum: ["equal", "unequal", "percentage", "shares"],
       required: true,
+    },
+
+    category: {
+      type: String,
+      enum: ["food", "transport", "hotel", "shopping", "fuel", "entertainment", "other"],
+      default: "other",
+    },
+
+    attachmentUrl: {
+      type: String,
     },
 
     splitAmong: [
@@ -42,6 +52,14 @@ const expenseSchema = new mongoose.Schema(
         amount: {
           type: Number,
           required: true,
+        },
+
+        percentage: {
+          type: Number,
+        },
+
+        shares: {
+          type: Number,
         },
       },
     ],
