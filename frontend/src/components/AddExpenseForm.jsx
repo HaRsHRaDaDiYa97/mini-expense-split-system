@@ -3,6 +3,7 @@ import { addExpenseApi } from "../api/expenseApi";
 import { toast } from "sonner";
 import api from "../api/axios";
 import { Paperclip, Loader2, Plus } from "lucide-react";
+import { compressImage } from "../utils/compressor";
 
 const categories = ["food", "transport", "hotel", "shopping", "fuel", "entertainment", "other"];
 
@@ -51,11 +52,12 @@ const AddExpenseForm = ({ groupId, fetchExpenses, userId, group }) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const data = new FormData();
-    data.append("file", file);
-
     try {
       setUploading(true);
+      const compressedFile = await compressImage(file);
+      const data = new FormData();
+      data.append("file", compressedFile);
+
       const res = await api.post("/upload", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });

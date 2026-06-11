@@ -62,8 +62,10 @@ export const uploadFile = async (req, res) => {
 
       fs.writeFileSync(filePath, req.file.buffer);
 
-      // Return local server URL
-      const localUrl = `http://localhost:${process.env.PORT || 8000}/uploads/${fileName}`;
+      // Return dynamic local server URL based on the request host
+      const host = req.get("host");
+      const protocol = req.protocol;
+      const localUrl = `${protocol}://${host}/uploads/${fileName}`;
       return res.status(200).json({
         success: true,
         url: localUrl,
